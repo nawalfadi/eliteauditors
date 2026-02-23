@@ -1,0 +1,53 @@
+// Bilingual translations for Elite Auditors
+export const translations = {
+  ar: {
+    companyInfo: 'معلومات الشركة',
+    team: 'الفريق',
+    number: 'العدد',
+    field: 'البيان',
+    labels: {
+      companyNameAr: 'اسم الشركة عربي',
+      companyNameEn: 'اسم الشركة انجليزي',
+      officeMobile: 'رقم جوال المكتب',
+      website: 'الموقع',
+      officeEmail: 'ايميل المكتب',
+      commercialRegistration: 'سجل تجاري CR',
+      licenseNumber: 'رقم الترخيص',
+      address: 'العنوان',
+      cpa: 'CPA',
+    },
+    tableHeaders: {
+      number: 'العدد',
+      name: 'الإسم',
+      jobTitle: 'المسمى الوظيفي',
+      mobile: 'رقم الجوال',
+      email: 'الإيميل',
+    },
+    copyright: '©',
+  },
+  en: {
+    companyInfo: 'Company Information',
+    team: 'Team',
+    number: 'No.',
+    field: 'Description',
+    labels: {
+      companyNameAr: 'Company Name (Arabic)',
+      companyNameEn: 'Company Name (English)',
+      officeMobile: 'Office Mobile',
+      website: 'Website',
+      officeEmail: 'Office Email',
+      commercialRegistration: 'Commercial Registration (CR)',
+      licenseNumber: 'License Number',
+      address: 'Address',
+      cpa: 'CPA',
+    },
+    tableHeaders: {
+      number: 'No.',
+      name: 'Name',
+      jobTitle: 'Job Title',
+      mobile: 'Mobile',
+      email: 'Email',
+    },
+    copyright: '©',
+  },
+}
