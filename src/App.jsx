@@ -1,28 +1,21 @@
 import { useState, useEffect } from 'react'
-import { companyInfo, teamMembers } from './data/companyData'
-import { translations } from './translations'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { HomePage } from './pages/HomePage'
+import { ServiceDetailPage } from './pages/ServiceDetailPage'
 import './App.css'
-
-function PhoneLink({ phone }) {
-  const tel = phone.startsWith('+') ? phone : `+966${phone.replace(/^0/, '')}`
-  return (
-    <a href={`tel:${tel}`} className="phone-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-      </svg>
-      {phone}
-    </a>
-  )
-}
 
 function App() {
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('elite-auditors-lang')
     return saved === 'en' ? 'en' : 'ar'
   })
+  const [activeSection, setActiveSection] = useState(() => {
+    const hash = typeof window !== 'undefined' ? window.location.hash.replace('#', '') : ''
+    return hash || 'about'
+  })
 
-  const t = translations[lang]
   const isRtl = lang === 'ar'
+  const location = useLocation()
 
   useEffect(() => {
     document.documentElement.lang = lang
@@ -32,22 +25,103 @@ function App() {
     localStorage.setItem('elite-auditors-lang', lang)
   }, [lang, isRtl])
 
-  const infoRows = [
-    { label: t.labels.companyNameAr, value: companyInfo.arabicName },
-    { label: t.labels.companyNameEn, value: companyInfo.englishName },
-    { label: t.labels.officeMobile, value: companyInfo.officeMobile, isPhone: true },
-    { label: t.labels.website, value: companyInfo.website },
-    { label: t.labels.officeEmail, value: companyInfo.officeEmail },
-    { label: t.labels.commercialRegistration, value: companyInfo.commercialRegistration },
-    { label: t.labels.licenseNumber, value: companyInfo.licenseNumber },
-    { label: t.labels.address, value: companyInfo.address },
-    { label: t.labels.cpa, value: companyInfo.cpa },
-  ]
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('[data-sr]'))
+    if (elements.length === 0) return
+
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      return
+    }
+
+    // Only run scroll-reveal on the Home page.
+    if (location.pathname !== '/') {
+      document.documentElement.classList.remove('sr-on')
+      document.documentElement.classList.remove('sr-init')
+      elements.forEach((el) => el.classList.add('is-visible'))
+      return
+    }
+
+    // Arm reveal styles and force a paint of the hidden state first
+    // so the transition is actually visible.
+    document.documentElement.classList.add('sr-on')
+    document.documentElement.classList.add('sr-init')
+    elements.forEach((el) => el.classList.remove('is-visible'))
+
+    // Batch class adds into a single frame to reduce main-thread churn.
+    const pending = new Set()
+    let flushRaf = 0
+    const queueVisible = (el) => {
+      pending.add(el)
+      if (flushRaf) return
+      flushRaf = window.requestAnimationFrame(() => {
+        flushRaf = 0
+        pending.forEach((node) => node.classList.add('is-visible'))
+        pending.clear()
+      })
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          const el = entry.target
+          queueVisible(el)
+          observer.unobserve(el)
+        }
+      },
+      // Trigger when the element is actually entering the viewport
+      // (so the user sees the "float in" during scroll, not off-screen).
+      { threshold: 0.01, rootMargin: '0px 0px -10% 0px' },
+    )
+
+    // 1st frame: hidden state paints (sr-init on, transitions off)
+    // 2nd frame: enable transitions and start observing
+    const raf1 = window.requestAnimationFrame(() => {
+      document.documentElement.classList.remove('sr-init')
+      const raf2 = window.requestAnimationFrame(() => {
+        // Anything already above-the-fold should be revealed immediately
+        // (e.g. the nav tabs), otherwise it can look like it's "missing".
+        const vh = window.innerHeight || 0
+        const inViewNow = []
+        const toObserve = []
+
+        for (const el of elements) {
+          const r = el.getBoundingClientRect()
+          const inView = r.bottom > 0 && r.top < vh
+          if (inView) inViewNow.push(el)
+          else toObserve.push(el)
+        }
+
+        inViewNow.forEach((el) => queueVisible(el))
+
+        // Observe in chunks to avoid long tasks on pages with many nodes.
+        let i = 0
+        const chunkSize = 30
+        const observeChunk = () => {
+          const end = Math.min(i + chunkSize, toObserve.length)
+          for (; i < end; i += 1) observer.observe(toObserve[i])
+          if (i < toObserve.length) window.setTimeout(observeChunk, 0)
+        }
+        observeChunk()
+      })
+      // eslint-disable-next-line no-use-before-define
+      raf2Id = raf2
+    })
+
+    let raf2Id = 0
+    return () => {
+      window.cancelAnimationFrame(raf1)
+      if (raf2Id) window.cancelAnimationFrame(raf2Id)
+      if (flushRaf) window.cancelAnimationFrame(flushRaf)
+      observer.disconnect()
+    }
+  }, [location.pathname, location.hash])
 
   return (
     <div className={`app ${isRtl ? 'rtl' : 'ltr'}`}>
       <div className="lang-toggle">
         <button
+          type="button"
           className={lang === 'ar' ? 'active' : ''}
           onClick={() => setLang('ar')}
           aria-label="العربية"
@@ -55,6 +129,7 @@ function App() {
           العربية
         </button>
         <button
+          type="button"
           className={lang === 'en' ? 'active' : ''}
           onClick={() => setLang('en')}
           aria-label="English"
@@ -63,99 +138,16 @@ function App() {
         </button>
       </div>
 
-      <header className="header">
-        <img
-          src="/logo.png"
-          alt="شركة نخبة المراجعين - Elite Auditors"
-          className="logo"
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage lang={lang} activeSection={activeSection} setActiveSection={setActiveSection} />}
         />
-        <div className="header-text">
-          <h1 className="company-title-ar">{companyInfo.arabicName}</h1>
-          <h2 className="company-title-en">{companyInfo.englishName}</h2>
-          <p className="tagline">{companyInfo.services.join(' - ')}</p>
-        </div>
-      </header>
-
-      <main className="main">
-        <section className="section company-info">
-          <h3 className="section-title">{t.companyInfo}</h3>
-          <table className="info-table">
-            <thead>
-              <tr>
-                <th>{t.number}</th>
-                <th>{t.field}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {infoRows.map((row, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>
-                    <span className="label">{row.label}</span>
-                    {row.isPhone ? (
-                      <PhoneLink phone={row.value} />
-                    ) : (
-                      <span className="value">{row.value}</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-
-        <section className="section team-section">
-          <h3 className="section-title">{t.team}</h3>
-          <table className="team-table">
-            <thead>
-              <tr>
-                <th>{t.tableHeaders.number}</th>
-                <th>{t.tableHeaders.name}</th>
-                <th>{t.tableHeaders.jobTitle}</th>
-                <th>{t.tableHeaders.mobile}</th>
-                <th>{t.tableHeaders.email}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teamMembers.map((member, i) => (
-                <tr key={member.id}>
-                  <td>{i + 1}</td>
-                  <td>
-                    <div className="member-name">
-                      <span className="name-ar">{member.arabicName}</span>
-                      <span className="name-en">{member.englishName}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="job-title">
-                      <span className="job-ar">{member.jobTitleArabic}</span>
-                      <span className="job-en">{member.jobTitleEnglish}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <PhoneLink phone={member.mobile} />
-                  </td>
-                  <td>
-                    <a href={`mailto:${member.email}`}>{member.email}</a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      </main>
-
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="services">{companyInfo.services.join(' - ')}</p>
-          <p className="copyright">{t.copyright} {new Date().getFullYear()} {companyInfo.arabicName} | {companyInfo.englishName}</p>
-        </div>
-        <img
-          src="/qr-code.png"
-          alt="QR Code"
-          className="footer-qr"
+        <Route
+          path="/services/:slug"
+          element={<ServiceDetailPage lang={lang} activeSection={activeSection} setActiveSection={setActiveSection} />}
         />
-      </footer>
+      </Routes>
     </div>
   )
 }
