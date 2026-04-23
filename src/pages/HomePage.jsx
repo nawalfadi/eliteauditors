@@ -341,12 +341,7 @@ export function HomePage({ lang, activeSection, setActiveSection }) {
                   <div className="position-strips__top" aria-label={isRtl ? 'الأعلى' : 'Top'}>
                     {topItems.map((p) =>
                       p?.title ? (
-                        <div
-                          key={p.key}
-                          className="position-strips__cell"
-                          data-sr="float"
-                          style={{ gridColumn: p.col, '--sr-delay': '190ms' }}
-                        >
+                        <div key={p.key} className="position-strips__cell" style={{ gridColumn: p.col }} data-sr="float" style={{ gridColumn: p.col, '--sr-delay': '190ms' }}>
                           <div className="position-strips__capsule" dir={isRtl ? 'rtl' : 'ltr'}>
                             {p.title}
                           </div>
@@ -363,12 +358,7 @@ export function HomePage({ lang, activeSection, setActiveSection }) {
                   <div className="position-strips__bottom" aria-label={isRtl ? 'الأسفل' : 'Bottom'}>
                     {bottomItems.map((p) =>
                       p?.title ? (
-                        <div
-                          key={p.key}
-                          className="position-strips__cell"
-                          data-sr="float"
-                          style={{ gridColumn: p.col, '--sr-delay': '240ms' }}
-                        >
+                        <div key={p.key} className="position-strips__cell" style={{ gridColumn: p.col }} data-sr="float" style={{ gridColumn: p.col, '--sr-delay': '240ms' }}>
                           <div className="position-strips__capsule" dir={isRtl ? 'rtl' : 'ltr'}>
                             {p.title}
                           </div>
