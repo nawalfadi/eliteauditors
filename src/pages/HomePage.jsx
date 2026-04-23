@@ -397,7 +397,6 @@ export function HomePage({ lang, activeSection, setActiveSection }) {
                     <div className="job-en">{member.jobTitleEnglish}</div>
                   </div>
                   <div className="team-links">
-                    <PhoneLink phone={member.mobile} variant="on-light" />
                     <GmailComposeLink email={member.email} />
                   </div>
                 </div>

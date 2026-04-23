@@ -229,7 +229,6 @@ export const teamMembers = [
     englishName: 'HAMAD AL MUNYIF',
     jobTitleArabic: 'الشريك المدير',
     jobTitleEnglish: 'Managing Partner / CPA / SOCPA',
-    mobile: '0545314747',
     email: 'h.almunif@eliteaudit.sa',
   },
   {
@@ -238,7 +237,6 @@ export const teamMembers = [
     englishName: 'OMAR ABDELSHAFY',
     jobTitleArabic: 'مراجع حسابات',
     jobTitleEnglish: 'Auditor',
-    mobile: '0565678659',
     email: 'o.abdelshafy@eliteaudit.sa',
   },
   {
@@ -247,7 +245,6 @@ export const teamMembers = [
     englishName: 'MAHMOUD SAEED',
     jobTitleArabic: 'مراجع حسابات',
     jobTitleEnglish: 'Auditor',
-    mobile: '0565530073',
     email: 'm.saeed@eliteaudit.sa',
   },
   {
@@ -256,7 +253,6 @@ export const teamMembers = [
     englishName: 'MOHAMED HAMDY',
     jobTitleArabic: 'مراجع حسابات',
     jobTitleEnglish: 'Auditor',
-    mobile: '0565814921',
     email: 'm.hamdy@eliteaudit.sa',
   },
   {
@@ -265,7 +261,6 @@ export const teamMembers = [
     englishName: 'RANA AMIN',
     jobTitleArabic: 'مراجع حسابات',
     jobTitleEnglish: 'Auditor',
-    mobile: '0535766689',
     email: 'r.amin@eliteaudit.sa',
   },
   {
@@ -274,7 +269,6 @@ export const teamMembers = [
     englishName: 'SEDRA SALEM',
     jobTitleArabic: 'مراجع حسابات',
     jobTitleEnglish: 'Auditor',
-    mobile: '0502736232',
     email: 's.salem@eliteaudit.sa',
   },
 ];
