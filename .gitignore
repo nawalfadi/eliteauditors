@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local build/export artifacts
+tmp_*.png
+tmp_pdf_pages/

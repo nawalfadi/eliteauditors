@@ -1,10 +1,40 @@
 // Bilingual translations for Elite Auditors
 export const translations = {
   ar: {
+    nav: {
+      about: 'من نحن',
+      values: 'قيمنا',
+      strategicGoals: 'الأهداف الاستراتيجية',
+      strategicPillars: 'الركائز الاستراتيجية',
+      services: 'خدماتنا',
+      methodology: 'منهجيتنا',
+      position: 'موقعنا في السوق',
+      companyInfo: 'معلومات الشركة',
+      team: 'الفريق',
+      contact: 'تواصل معنا',
+    },
+    hero: {
+      title: 'نصنع الفرق نحو كل إنجاز',
+      subtitle: 'حلول تدقيق واستشارات وزكاة وضريبة مصممة لدعم النمو والامتثال وبناء الثقة.',
+      ctas: {
+        call: 'اتصل الآن',
+        email: 'راسلنا',
+      },
+    },
     companyInfo: 'معلومات الشركة',
     team: 'الفريق',
     number: 'العدد',
     field: 'البيان',
+    sections: {
+      about: 'من نحن',
+      values: 'معتقداتنا وقيمنا',
+      strategicGoals: 'الأهداف الاستراتيجية',
+      strategicPillars: 'الركائز الاستراتيجية الأساسية',
+      services: 'خدماتنا',
+      methodology: 'منهجيتنا',
+      position: 'موقعنا في السوق',
+      contact: 'تواصل معنا',
+    },
     labels: {
       companyNameAr: 'اسم الشركة عربي',
       companyNameEn: 'اسم الشركة انجليزي',
@@ -23,13 +53,54 @@ export const translations = {
       mobile: 'رقم الجوال',
       email: 'الإيميل',
     },
+    contact: {
+      phone: 'الهاتف',
+      email: 'البريد الإلكتروني',
+      website: 'الموقع',
+      address: 'العنوان',
+    },
     copyright: '©',
+    serviceDetail: {
+      backHome: '⟵ العودة إلى الرئيسية',
+      prevService: 'الخدمة السابقة',
+      nextService: 'الخدمة التالية',
+    },
   },
   en: {
+    nav: {
+      about: 'About',
+      values: 'Values',
+      strategicGoals: 'Strategic goals',
+      strategicPillars: 'Strategic pillars',
+      services: 'Services',
+      methodology: 'Methodology',
+      position: 'Our Position',
+      companyInfo: 'Company Info',
+      team: 'Team',
+      contact: 'Contact',
+    },
+    hero: {
+      title: 'With Every Achievement… We Make the Difference',
+      subtitle: 'Audit, advisory, zakat & tax services designed to enable growth, compliance, and trust.',
+      ctas: {
+        call: 'Call now',
+        email: 'Email us',
+      },
+    },
     companyInfo: 'Company Information',
     team: 'Team',
     number: 'No.',
     field: 'Description',
+    sections: {
+      about: 'About us',
+      values: 'Our values',
+      strategicGoals: 'Strategic goals',
+      strategicPillars: 'Core strategic pillars',
+      services: 'Our services',
+      methodology: 'Our methodology',
+      position: 'Our position',
+      contact: 'Contact',
+    },
     labels: {
       companyNameAr: 'Company Name (Arabic)',
       companyNameEn: 'Company Name (English)',
@@ -48,6 +119,17 @@ export const translations = {
       mobile: 'Mobile',
       email: 'Email',
     },
+    contact: {
+      phone: 'Phone',
+      email: 'Email',
+      website: 'Website',
+      address: 'Address',
+    },
     copyright: '©',
+    serviceDetail: {
+      backHome: '⟵ Back to home',
+      prevService: 'Previous service',
+      nextService: 'Next service',
+    },
   },
 }
